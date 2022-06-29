@@ -5,11 +5,10 @@ import "./GnosisSafeProxy.sol";
 import "./IProxyCreationCallback.sol";
 
 /// @title Proxy Factory - 允许在一个事务中创建新的代理联系人并执行对新代理的消息调用
-/// @author Stefan George - <stefan@gnosis.pm>
 contract GnosisSafeProxyFactory {
     event ProxyCreation(GnosisSafeProxy proxy, address singleton);
 
-    /// @dev 允许在一个事务中 创建新的代理联系人 并执行 对新代理的消息调用 
+    /// @dev 允许在一个事务中 创建新的代理联系人 并执行 对新代理的消息调用
     /// @param singleton 单例合约的地址
     /// @param data 发送到新代理合约的消息调用的有效载荷
     function createProxy(address singleton, bytes memory data) public returns (GnosisSafeProxy proxy) {
@@ -29,15 +28,15 @@ contract GnosisSafeProxyFactory {
         return type(GnosisSafeProxy).runtimeCode;
     }
 
-   /// @dev 允许检索用于代理部署的创建代码。这样就可以很容易地计算预测地址
-   function proxyCreationCode() public pure returns (bytes memory) {
+    /// @dev 允许检索用于代理部署的创建代码。这样就可以很容易地计算预测地址
+    function proxyCreationCode() public pure returns (bytes memory) {
         return type(GnosisSafeProxy).creationCode;
     }
 
-    /// @dev 允许使用 CREATE2 创建新的代理联系人，但它不运行初始化程序 
-    /// 此方法仅用作从其他方法调用的实用程序 
+    /// @dev 允许使用 CREATE2 创建新的代理联系人，但它不运行初始化程序
+    /// 此方法仅用作从其他方法调用的实用程序
     /// @param _singleton 单例合约的地址
-    /// @param initializer 发送到新代理合约的消息调用的有效载荷 
+    /// @param initializer 发送到新代理合约的消息调用的有效载荷
     /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址
     function deployProxyWithNonce(
         address _singleton,
@@ -54,11 +53,11 @@ contract GnosisSafeProxyFactory {
         require(address(proxy) != address(0), "Create2 call failed");
     }
 
-   /// @dev 允许在一个事务中 创建新的代理联系人 并执行 对新代理的消息调用 
-   /// @param _singleton 单例合约地址
-   /// @param initializer 发送到新代理合约的消息调用的有效载荷 
-   /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址
-   function createProxyWithNonce(
+    /// @dev 允许在一个事务中 创建新的代理联系人并执行对新代理的消息调用
+    /// @param _singleton 单例合约地址
+    /// @param initializer 发送到新代理合约的消息调用的有效载荷
+    /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址
+    function createProxyWithNonce(
         address _singleton,
         bytes memory initializer,
         uint256 saltNonce
@@ -74,10 +73,10 @@ contract GnosisSafeProxyFactory {
         emit ProxyCreation(proxy, _singleton);
     }
 
-    /// @dev 允许创建新的代理联系人， 对新代理执行消息调用，并在一个事务中调用指定的回调 
+    /// @dev 允许创建新的代理联系人， 对新代理执行消息调用，并在一个事务中调用指定的回调
     /// @param _singleton 单例合约的地址
-    /// @param initializer 发送到新代理合约的消息调用的有效载荷 
-    /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址 
+    /// @param initializer 发送到新代理合约的消息调用的有效载荷
+    /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址
     /// @param callback 新代理合约成功部署和初始化后调用的回调
     function createProxyWithCallback(
         address _singleton,
@@ -90,11 +89,11 @@ contract GnosisSafeProxyFactory {
         if (address(callback) != address(0)) callback.proxyCreated(proxy, _singleton, initializer, saltNonce);
     }
 
-    /// @dev 允许获取 通过`createProxyWithNonce`创建的新代理联系人的地址 
-    /// 此方法仅用于地址计算目的，当您使用将恢复的初始化程序时， 因此返回响应一个回复。调用此方法时，将 `from` 设置为代理工厂的地址 
+    /// @dev 允许获取 通过`createProxyWithNonce`创建的新代理联系人的地址
+    /// 此方法仅用于地址计算目的，当您使用将恢复的初始化程序时， 因此返回响应一个回复。调用此方法时，将 `from` 设置为代理工厂的地址
     /// @param _singleton 单例合约地址
     /// @param initializer 发送到新代理合约的消息调用的有效载荷
-    /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址 
+    /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址
     function calculateCreateProxyWithNonceAddress(
         address _singleton,
         bytes calldata initializer,
