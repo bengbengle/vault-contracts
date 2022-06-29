@@ -1,4 +1,4 @@
-name: safe-contracts
+name: vault-contracts
 on: [ push, pull_request ]
 
 jobs:
