@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 import "./GnosisSafeProxy.sol";
 import "./IProxyCreationCallback.sol";
 
-/// @title Proxy Factory - 允许在一个事务中创建新的代理联系人并执行对新代理的消息调用
+/// @title Proxy Factory - 允许在一个事务中创建新的代理联系人 并执行对新代理的消息调用
 contract GnosisSafeProxyFactory {
     event ProxyCreation(GnosisSafeProxy proxy, address singleton);
 
@@ -23,17 +23,17 @@ contract GnosisSafeProxyFactory {
         emit ProxyCreation(proxy, singleton);
     }
 
-    /// @dev 允许检索已部署代理的运行时代码。这可用于检查是否部署了预期的代理
+    /// @dev 允许检索已部署代理的运行时代码 这可用于检查是否部署了预期的代理
     function proxyRuntimeCode() public pure returns (bytes memory) {
         return type(GnosisSafeProxy).runtimeCode;
     }
 
-    /// @dev 允许检索用于代理部署的创建代码。这样就可以很容易地计算预测地址
+    /// @dev 允许检索用于代理部署的创建代码 这样就可以很容易地计算预测地址
     function proxyCreationCode() public pure returns (bytes memory) {
         return type(GnosisSafeProxy).creationCode;
     }
 
-    /// @dev 允许使用 CREATE2 创建新的代理联系人，但它不运行初始化程序
+    /// @dev 允许使用 CREATE2 创建新的代理联系人 , 但它不运行初始化程序
     /// 此方法仅用作从其他方法调用的实用程序
     /// @param _singleton 单例合约的地址
     /// @param initializer 发送到新代理合约的消息调用的有效载荷
@@ -43,7 +43,7 @@ contract GnosisSafeProxyFactory {
         bytes memory initializer,
         uint256 saltNonce
     ) internal returns (GnosisSafeProxy proxy) {
-        // 如果初始化器改变了代理地址也应该改变。散列初始化数据比仅仅连接它更便宜
+        // 如果初始化器改变了代理地址也应该改变 散列初始化数据比仅仅连接它更便宜
         bytes32 salt = keccak256(abi.encodePacked(keccak256(initializer), saltNonce));
         bytes memory deploymentData = abi.encodePacked(type(GnosisSafeProxy).creationCode, uint256(uint160(_singleton)));
         // solhint-disable-next-line no-inline-assembly
@@ -73,7 +73,7 @@ contract GnosisSafeProxyFactory {
         emit ProxyCreation(proxy, _singleton);
     }
 
-    /// @dev 允许创建新的代理联系人， 对新代理执行消息调用，并在一个事务中调用指定的回调
+    /// @dev 允许创建新的代理联系人 ,  对新代理执行消息调用 , 并在一个事务中调用指定的回调
     /// @param _singleton 单例合约的地址
     /// @param initializer 发送到新代理合约的消息调用的有效载荷
     /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址
@@ -90,7 +90,7 @@ contract GnosisSafeProxyFactory {
     }
 
     /// @dev 允许获取 通过`createProxyWithNonce`创建的新代理联系人的地址
-    /// 此方法仅用于地址计算目的，当您使用将恢复的初始化程序时， 因此返回响应一个回复。调用此方法时，将 `from` 设置为代理工厂的地址
+    /// 此方法仅用于地址计算目的 , 当您使用将恢复的初始化程序时 ,  因此返回响应一个回复 调用此方法时 , 将 `from` 设置为代理工厂的地址
     /// @param _singleton 单例合约地址
     /// @param initializer 发送到新代理合约的消息调用的有效载荷
     /// @param saltNonce Nonce 将用于生成盐以计算新代理合约的地址

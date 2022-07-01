@@ -9,6 +9,7 @@ describe("GnosisSafe", async () => {
     const [user1] = waffle.provider.getWallets();
 
     const setupTests = deployments.createFixture(async ({ deployments }) => {
+        console.log('deployments:', deployments)
         await deployments.fixture();
         return {
             safe: await getSafeWithOwners([user1.address])
@@ -20,7 +21,7 @@ describe("GnosisSafe", async () => {
         it('sentinels should not be owners or modules', async () => {
             const { safe } = await setupTests()
             const readOnlySafe = safe.connect(hre.ethers.provider)
-
+            
             expect(await safe.isOwner(AddressOne)).to.be.false
 
             let sig = "0x" + "0000000000000000000000000000000000000000000000000000000000000001" + "0000000000000000000000000000000000000000000000000000000000000000" + "01"

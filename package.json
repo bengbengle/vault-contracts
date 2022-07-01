@@ -82,5 +82,8 @@
   },
   "peerDependencies": {
     "ethers": "^5.1.4"
+  },
+  "dependencies": {
+    "eth-lightwallet": "^4.0.0"
   }
 }

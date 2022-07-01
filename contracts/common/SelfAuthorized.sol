@@ -8,7 +8,7 @@ contract SelfAuthorized {
     }
 
     modifier authorized() {
-        // 这是一个函数调用， 因为它最小化了字节码大小
+        // 这是一个函数调用 ,  因为它最小化了字节码大小
         requireSelfCall();
         _;
     }

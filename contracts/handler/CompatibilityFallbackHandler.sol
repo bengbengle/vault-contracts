@@ -19,7 +19,7 @@ contract CompatibilityFallbackHandler is DefaultCallbackHandler, ISignatureValid
 
     /**
      * ISignatureValidator 的实现（参见`interfaces/ISignatureValidator.sol`） 
-     * @dev 应该返回所提供的签名对于所提供的数据是否有效。 
+     * @dev 应该返回所提供的签名对于所提供的数据是否有效  
      * @param _data 代表地址（msg.sender）签名的任意长度数据 
      * @param _signature 与_data 关联的签名字节数组 
      * @return 对应_data的有效或无效签名的布尔值
@@ -36,17 +36,17 @@ contract CompatibilityFallbackHandler is DefaultCallbackHandler, ISignatureValid
         return EIP1271_MAGIC_VALUE;
     }
 
-    /// @dev 返回可以由所有者签名的消息的哈希值。 
+    /// @dev 返回可以由所有者签名的消息的哈希值  
     /// @param message 应该被散列的消息 
-    /// @return 消息散列。
+    /// @return 消息散列 
     function getMessageHash(bytes memory message) public view returns (bytes32) {
         return getMessageHashForSafe(GnosisSafe(payable(msg.sender)), message);
     }
     
-    /// @dev 返回可以由所有者签名的消息的哈希值。 
+    /// @dev 返回可以由所有者签名的消息的哈希值  
     /// @param safe 消息的目标安全 
     /// @param message 应该被散列的消息 
-    /// @return 消息散列。
+    /// @return 消息散列 
     function getMessageHashForSafe(GnosisSafe safe, bytes memory message) public view returns (bytes32) {
         bytes32 safeMessageHash = keccak256(abi.encode(SAFE_MSG_TYPEHASH, keccak256(message)));
         return keccak256(abi.encodePacked(bytes1(0x19), bytes1(0x01), safe.domainSeparator(), safeMessageHash));
@@ -78,12 +78,12 @@ contract CompatibilityFallbackHandler is DefaultCallbackHandler, ISignatureValid
     }
 
     /**
-    * @dev 在 self 的上下文中对 targetContract 执行委托调用。 * 在内部恢复执行以避免副作用（使其成为静态）。捕获还原并将编码结果作为字节返回。 
-    * @param targetContract 包含要执行的代码的合约地址。 
-    * @param calldataPayload 应该发送到目标合约的调用数据（编码的方法名称和参数）。
+    * @dev 在 self 的上下文中对 targetContract 执行委托调用  * 在内部恢复执行以避免副作用（使其成为静态） 捕获还原并将编码结果作为字节返回  
+    * @param targetContract 包含要执行的代码的合约地址  
+    * @param calldataPayload 应该发送到目标合约的调用数据（编码的方法名称和参数） 
     */
     function simulate(address targetContract, bytes calldata calldataPayload) external returns (bytes memory response) {
-        // 禁止编译器关于不使用参数的警告，同时允许参数保留名称 以用于文档目的。 这不会​​生成代码。
+        // 禁止编译器关于不使用参数的警告 , 同时允许参数保留名称 以用于文档目的  这不会​​生成代码 
         targetContract;
         calldataPayload;
 

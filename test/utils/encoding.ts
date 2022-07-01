@@ -12,6 +12,6 @@ export const Erc20Interface = new hre.ethers.utils.Interface(Erc20)
 
 export const encodeTransfer = (target: string, amount: string | number): string => {
     return Erc20Interface.encodeFunctionData("transfer", [target, amount])
-} 
+}
 
 export const chainId = async () => { return (await hre.ethers.provider.getNetwork()).chainId }

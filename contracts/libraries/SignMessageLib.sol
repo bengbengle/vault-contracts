@@ -13,17 +13,17 @@ contract SignMessageLib is GnosisSafeStorage {
 
     event SignMsg(bytes32 indexed msgHash);
 
-    /// @dev 将消息标记为已签名， 以便它可以与 EIP-1271 一起使用 将消息 (`_data`) 标记为已签名。 
-    /// @param _data 任意长度的数据， 应该标记为代表地址签名的数据（this）
+    /// @dev 将消息标记为已签名 ,  以便它可以与 EIP-1271 一起使用 将消息 (`_data`) 标记为已签名  
+    /// @param _data 任意长度的数据 ,  应该标记为代表地址签名的数据（this）
     function signMessage(bytes calldata _data) external {
         bytes32 msgHash = getMessageHash(_data);
         signedMessages[msgHash] = 1;
         emit SignMsg(msgHash);
     }
 
-    /// @dev 返回可以由所有者签名的消息的哈希值。 
+    /// @dev 返回可以由所有者签名的消息的哈希值  
     /// @param message 应该被散列的消息 
-    /// @return 消息散列。
+    /// @return 消息散列 
     function getMessageHash(bytes memory message) public view returns (bytes32) {
         bytes32 safeMessageHash = keccak256(abi.encode(SAFE_MSG_TYPEHASH, keccak256(message)));
         return

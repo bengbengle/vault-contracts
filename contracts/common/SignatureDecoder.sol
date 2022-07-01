@@ -3,9 +3,9 @@ pragma solidity >=0.7.0 <0.9.0;
 
 /// @title SignatureDecoder - Decodes signatures that a encoded as bytes
 contract SignatureDecoder {
-    /// @dev 将字节签名划分为 `uint8 v, bytes32 r, bytes32 s`。 
-    /// @notice 确保 边界检查，以避免 越界访问 
-    /// @param pos 要读取哪个签名。应先执行此参数的边界检查，以避免越界访问 
+    /// @dev 将字节签名划分为 `uint8 v, bytes32 r, bytes32 s`  
+    /// @notice 确保 边界检查 , 以避免 越界访问 
+    /// @param pos 要读取哪个签名 应先执行此参数的边界检查 , 以避免越界访问 
     /// @param signatures concatenated rsv signatures
 
     function signatureSplit(bytes memory signatures, uint256 pos)

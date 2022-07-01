@@ -22,16 +22,14 @@ export const getContractStorageLayout = async (
     const artifact = fs.readFileSync(artifactPath);
     const artifactJsonABI = JSON.parse(artifact.toString());
 
-    const artifactIncludesStorageLayout =
-      artifactJsonABI?.output?.contracts?.[sourceName]?.[contractName]
-        ?.storageLayout;
+    const artifactIncludesStorageLayout = artifactJsonABI?.output?.contracts?.[sourceName]?.[contractName]?.storageLayout;
+
     if (!artifactIncludesStorageLayout) {
       continue;
     }
 
-    const contractStateVariablesFromArtifact =
-      artifactJsonABI.output.contracts[sourceName][contractName].storageLayout
-        .storage;
+    const contractStateVariablesFromArtifact = artifactJsonABI.output.contracts[sourceName][contractName].storageLayout.storage;
+
     for (const stateVariable of contractStateVariablesFromArtifact) {
       stateVariables.push({
         name: stateVariable.label,
@@ -41,8 +39,7 @@ export const getContractStorageLayout = async (
       });
     }
 
-    // The same contract can be present in multiple artifacts; thus we break if we already got
-    // storage layout once
+    // 同一个合约可以出现在多个工件中；因此 , 如果我们已经获得了一次存储布局 , 我们就会中断
     break;
   }
 

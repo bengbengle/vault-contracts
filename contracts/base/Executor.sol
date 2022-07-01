@@ -2,7 +2,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 import "../common/Enum.sol";
 
-/// @title Executor - 可以执行交易的合约
+/// @title Executor - 执行交易
 contract Executor {
     function execute(
         address to,

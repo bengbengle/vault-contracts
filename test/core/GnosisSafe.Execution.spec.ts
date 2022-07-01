@@ -95,6 +95,10 @@ describe("GnosisSafe", async () => {
             await expect(
                 executeContractCallWithSigners(safe, storageSetter, "setStorage", ["0xbaddad"], [user1], true)
             ).to.emit(safe, "ExecutionSuccess")
+            let ss1 = await hre.ethers.provider.getStorageAt(safe.address, "0x4242424242424242424242424242424242424242424242424242424242424242");
+            let ss2 = await hre.ethers.provider.getStorageAt(storageSetter.address, "0x4242424242424242424242424242424242424242424242424242424242424242");
+
+            console.log('sss:', ss1, ss2, 'storageSetter.address::', storageSetter.address, safe.address);
 
             await expect(
                 await hre.ethers.provider.getStorageAt(safe.address, "0x4242424242424242424242424242424242424242424242424242424242424242")

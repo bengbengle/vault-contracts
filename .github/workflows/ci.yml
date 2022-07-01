@@ -20,6 +20,7 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+  
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -58,7 +59,7 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          
+
   benchmarks:
     runs-on: ubuntu-latest
     strategy:

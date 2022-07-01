@@ -31,10 +31,10 @@ abstract contract BaseGuard is Guard {
     }
 }
 
-/// @title Fallback Manager - 管理对此合约的后备调用的合约
+/// @title Fallback Manager - 管理对此合约的 回调合约
 contract GuardManager is SelfAuthorized {
     event ChangedGuard(address guard);
-    // keccak256("guard_manager.guard.address")
+    //keccak256("guard_manager.guard.address")
     bytes32 internal constant GUARD_STORAGE_SLOT = 0x4a204f620c8c5ccdca3fd54d003badd85ba500436a431f0cbda4f558c93c34c8;
 
     /// @dev Set a guard that checks transactions before execution

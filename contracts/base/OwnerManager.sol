@@ -2,8 +2,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 import "../common/SelfAuthorized.sol";
 
-/// @title OwnerManager - 管理一组所有者和执行操作的阈值。
-/// @author Stefan George - <stefan@gnosis.pm>
+/// @title OwnerManager - 管理一组所有者和执行操作的阈值 
 contract OwnerManager is SelfAuthorized {
     event AddedOwner(address owner);
     event RemovedOwner(address owner);
@@ -42,62 +41,61 @@ contract OwnerManager is SelfAuthorized {
         threshold = _threshold;
     }
     
-    /// @dev 允许将新所有者添加到保险箱并同时更新阈值。 这只能通过安全事务来完成。
-    /// @notice 将所有者 `owner` 添加到 Safe 并将阈值更新为 `_threshold`。
-    /// @param owner 新的所有者地址。
+    /// @dev 允许将新所有者添加到保险箱并同时更新阈值  这只能通过安全事务来完成 
+    /// @notice 将所有者 `owner` 添加到 Safe 并将阈值更新为 `_threshold` 
+    /// @param owner 新的所有者地址 
     /// @param _threshold 新阈值
     function addOwnerWithThreshold(address owner, uint256 _threshold) public authorized {
-        // 所有者地址不能为空，哨兵或保险箱本身。
+        // 所有者地址不能为空 , 哨兵或保险箱本身 
         require(owner != address(0) && owner != SENTINEL_OWNERS && owner != address(this), "GS203");
-        // 不允许重复所有者。
+        // 不允许重复所有者 
         require(owners[owner] == address(0), "GS204");
         owners[owner] = owners[SENTINEL_OWNERS];
         owners[SENTINEL_OWNERS] = owner;
         ownerCount++;
         emit AddedOwner(owner);
-        // 如果阈值改变，则改变阈值。
+        // 如果阈值改变 , 则改变阈值 
         if (threshold != _threshold) changeThreshold(_threshold);
     }
 
     
-    /// @dev 允许从保险箱中删除所有者并同时更新阈值。 这只能通过安全事务来完成。 
-    /// @notice 从 Safe 中删除所有者 `owner` 并将阈值更新为 `_threshold`。 
+    /// @dev 允许从保险箱中删除所有者并同时更新阈值  这只能通过安全事务来完成  
+    /// @notice 从 Safe 中删除所有者 `owner` 并将阈值更新为 `_threshold`  
     /// @param prevOwner Owner 指向链表中要移除的所有者 
-    /// @param owner 要移除的所有者地址。 
-    /// @param _threshold 新阈值。
+    /// @param owner 要移除的所有者地址  
+    /// @param _threshold 新阈值 
     function removeOwner(
         address prevOwner,
         address owner,
         uint256 _threshold
     ) public authorized {
-        // 如果仍然可以达到阈值，则只允许删除所有者。
+        // 如果仍然可以达到阈值 , 则只允许删除所有者 
         require(ownerCount - 1 >= _threshold, "GS201");
-        // 验证所有者地址并检查它是否与所有者索引相对应。
+        // 验证所有者地址并检查它是否与所有者索引相对应 
         require(owner != address(0) && owner != SENTINEL_OWNERS, "GS203");
         require(owners[prevOwner] == owner, "GS205");
         owners[prevOwner] = owners[owner];
         owners[owner] = address(0);
         ownerCount--;
         emit RemovedOwner(owner);
-        // 如果阈值已更改，则更改阈值。
+        // 如果阈值已更改 , 则更改阈值 
         if (threshold != _threshold) changeThreshold(_threshold);
     }
 
-    /// @dev 允许用另一个地址交换/替换保险箱中的所有者。 这只能通过安全事务来完成。 
-    /// @notice 将保险箱中的所有者 `oldOwner` 替换为 `newOwner`。 
+    /// @dev 允许用另一个地址替换 Vault 中的所有者, 将保险箱中的所有者 `oldOwner` 替换为 `newOwner`  
     /// @param prevOwner Owner 指向链表中要替换的所有者 
-    /// @param oldOwner 要替换的所有者地址。 
-    /// @param newOwner 新所有者地址。
+    /// @param oldOwner 要替换的所有者地址  
+    /// @param newOwner 新所有者地址 
     function swapOwner(
         address prevOwner,
         address oldOwner,
         address newOwner
     ) public authorized {
-        // 所有者地址不能为空，哨兵或保险箱本身。
+        // 所有者地址不能为空 , 哨兵或保险箱本身 
         require(newOwner != address(0) && newOwner != SENTINEL_OWNERS && newOwner != address(this), "GS203");
-        // 不允许重复所有者。
+        // 不允许重复所有者 
         require(owners[newOwner] == address(0), "GS204");
-        // 验证 oldOwner 地址并检查它是否对应于所有者索引。
+        // 验证 oldOwner 地址并检查它是否对应于所有者索引 
         require(oldOwner != address(0) && oldOwner != SENTINEL_OWNERS, "GS203");
         require(owners[prevOwner] == oldOwner, "GS205");
         owners[newOwner] = owners[oldOwner];
@@ -107,13 +105,13 @@ contract OwnerManager is SelfAuthorized {
         emit AddedOwner(newOwner);
     }
 
-    /// @dev 允许更新安全所有者所需的确认次数。 这只能通过安全事务来完成。 
-    /// @notice 将 Safe 的阈值更改为 `_threshold`。 
-    /// @param _threshold 新阈值。
+    /// @dev 允许更新安全所有者所需的确认次数  这只能通过安全事务来完成  
+    /// @notice 将 Safe 的阈值更改为 `_threshold`  
+    /// @param _threshold 新阈值 
     function changeThreshold(uint256 _threshold) public authorized {
-        // 验证阈值小于所有者数。
+        // 验证阈值小于所有者数 
         require(_threshold <= ownerCount, "GS201");
-        // 必须至少有一个保险箱所有者。
+        // 必须至少有一个保险箱所有者 
         require(_threshold >= 1, "GS202");
         threshold = _threshold;
         emit ChangedThreshold(threshold);
@@ -127,8 +125,8 @@ contract OwnerManager is SelfAuthorized {
         return owner != SENTINEL_OWNERS && owners[owner] != address(0);
     }
 
-    /// @dev 返回所有者数组。 
-    /// @return 安全所有者数组。
+    /// @dev 返回所有者数组  
+    /// @return 安全所有者数组 
     function getOwners() public view returns (address[] memory) {
         address[] memory array = new address[](ownerCount);
 

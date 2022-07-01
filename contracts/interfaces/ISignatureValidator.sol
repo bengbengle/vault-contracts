@@ -12,8 +12,8 @@ abstract contract ISignatureValidator is ISignatureValidatorConstants {
      * @param _data 代表地址（this）签名的任意长度数据 
      * @param _signature 与_data关联的签名字节数组 
      * 
-     * 必须返回 bytes4 魔术值 0x20c13b0b当函数通过时。 
-     * 不得修改状态（对于 solc < 0.5 使用 STATICCALL，对于 solc > 0.5 使用视图修饰符） 
+     * 必须返回 bytes4 魔术值 0x20c13b0b当函数通过时  
+     * 不得修改状态（对于 solc < 0.5 使用 STATICCALL , 对于 solc > 0.5 使用视图修饰符） 
      * 必须允许外部调用
 
      */

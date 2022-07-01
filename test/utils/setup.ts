@@ -61,7 +61,6 @@ export const migrationContract = async () => {
     return await hre.ethers.getContractFactory("Migration");
 }
 
-
 export const getMock = async () => {
     const Mock = await hre.ethers.getContractFactory("MockContract");
     return await Mock.deploy();

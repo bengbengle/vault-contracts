@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 /// @title SecuredTokenTransfer - Secure token transfer
 contract SecuredTokenTransfer {
-    /// @dev 传输一个代币，如果成功则返回 
+    /// @dev 传输一个代币 , 如果成功则返回 
     /// @param token 应该被传输的代币
     /// @param receiver 代币应该被传输到的接收者 
     /// @param amount 代币的数量应该转移的
